@@ -186,7 +186,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				throw new ArgumentOutOfRangeException(nameof(versionRequiredToExtract));
 			}
 
-			this.DateTime = DateTime.Now;
+			this.DateTime = DateTime.MinValue;
 			this.name = CleanName(name);
 			this.versionMadeBy = (ushort)madeByInfo;
 			this.versionToExtract = (ushort)versionRequiredToExtract;
@@ -1157,7 +1157,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 				name = name.Substring(Path.GetPathRoot(name).Length);
 			}
 
-			name = name.Replace(@"\", "/");
+			name = name.Replace('\\', '/');
 
 			while ((name.Length > 0) && (name[0] == '/')) {
 				name = name.Remove(0, 1);
