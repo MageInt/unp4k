@@ -39,28 +39,28 @@ namespace unp4k.gui.TreeModel
 	public abstract class TreeItem : SharpTreeNode, ITreeItem
 	{
 		public virtual String Title { get; }
-		public ITreeItem ParentTreeItem => this.Parent as ITreeItem;
+		public ITreeItem ParentTreeItem => Parent as ITreeItem;
 		
 		private String _sortKey;
 		public virtual String SortKey => 
-			this._sortKey = this._sortKey ??
-			$"{this.ParentTreeItem?.SortKey}\\{this.Text}".Trim('\\');
+			_sortKey = _sortKey ??
+			$"{ParentTreeItem?.SortKey}\\{Text}".Trim('\\');
 
 		private String _relativePath;
 		public virtual String RelativePath =>
-			this._relativePath = this._relativePath ?? 
-			$"{this.ParentTreeItem?.RelativePath}\\{this.Text}".Trim('\\');
+			_relativePath = _relativePath ?? 
+			$"{ParentTreeItem?.RelativePath}\\{Text}".Trim('\\');
 
 		private IEnumerable<ITreeItem> _allChildren;
 		public virtual IEnumerable<ITreeItem> AllChildren =>
-			this._allChildren = this._allChildren ??
-			this.Children
+			_allChildren = _allChildren ??
+			Children
 				.OfType<ITreeItem>()
 				.SelectMany(c => c.AllChildren.Union(new[] { c }))
 				.OfType<ITreeItem>()
 				.ToArray();
 
-		public override Object Text => this.Title;
+		public override Object Text => Title;
 
 		public abstract DateTime LastModifiedUtc { get; }
 		public abstract Int64 StreamLength { get; }
@@ -69,7 +69,7 @@ namespace unp4k.gui.TreeModel
 
 		internal TreeItem(String title)
 		{
-			this.Title = title;
+			Title = title;
 		}
 
 		// TODO: Factory selection
@@ -113,9 +113,9 @@ namespace unp4k.gui.TreeModel
 
 		public void Sort()
 		{
-			if (this.Children.Count > 1)
+			if (Children.Count > 1)
 			{
-				this.Children.Sort((x1, x2) =>
+				Children.Sort((x1, x2) =>
 				{
 					if (x1 is TreeItem t1)
 					{
@@ -129,7 +129,7 @@ namespace unp4k.gui.TreeModel
 				});
 			}
 
-			foreach (var child in this.Children.OfType<TreeItem>())
+			foreach (var child in Children.OfType<TreeItem>())
 			{
 				child.Sort();
 			}

@@ -19,19 +19,19 @@ namespace unp4k.gui.TreeModel
 
 		public override String RelativePath => String.Empty;
 
-		public override DateTime LastModifiedUtc => this.AllChildren
+		public override DateTime LastModifiedUtc => AllChildren
 			.OfType<IStreamTreeItem>()
 			.Max(t => t.LastModifiedUtc);
 
-		public override Int64 StreamLength => this.AllChildren
+		public override Int64 StreamLength => AllChildren
 			.OfType<IStreamTreeItem>()
 			.Sum(t => t.StreamLength);
 
 		private ImageSource _icon;
 		public override Object Icon =>
-			this._icon = this._icon ??
+			_icon = _icon ??
 			IconManager.GetCachedFileIcon(
-				path: this.Title,
+				path: Title,
 				iconSize: IconManager.IconSize.Large);
 
 		public ZipFileTreeItem(ZipFile zipFile, String name = null)
@@ -69,7 +69,7 @@ namespace unp4k.gui.TreeModel
 
 			ArchiveExplorer.RegisterProgress(oldProgress);
 
-			ArchiveExplorer.UpdateStatus($"Loaded {this.Text} in {timeTaken:#,000}ms").Wait();
+			ArchiveExplorer.UpdateStatus($"Loaded {Text} in {timeTaken:#,000}ms").Wait();
 		}
 	}
 }
