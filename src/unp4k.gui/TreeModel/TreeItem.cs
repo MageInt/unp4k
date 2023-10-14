@@ -82,17 +82,11 @@ namespace unp4k.gui.TreeModel
 		{
 			string[] ParentSplitPath = Path.GetDirectoryName(fullPath).Split(CharSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-			ITreeItem parent = GetParentRelativePath(ParentSplitPath); //5%CPU
+			ITreeItem parent = GetParentRelativePath(ParentSplitPath); //24%CPU
 
 			if (parent == null) return null;
 
 			StreamTreeItem streamItem = new StreamTreeItem(Path.GetFileName(fullPath), @delegate, lastModifiedUtc, streamLength);
-
-			//TOTO c'est quoi cette merde sans nom
-			//foreach (var factory in factories)
-			//{
-			//	streamItem = factory.Handle(streamItem) as StreamTreeItem; //50% Cpu
-			//}
 
 			parent.Children.Add(streamItem);
 
@@ -105,7 +99,7 @@ namespace unp4k.gui.TreeModel
 
 			string key = fullPath[0];
 
-			DirectoryTreeItem directory = Children.OfType<DirectoryTreeItem>().Where(d => d.Title == key).FirstOrDefault();
+			DirectoryTreeItem directory = Children.OfType<DirectoryTreeItem>().FirstOrDefault(d => d.Title == key);
 
 			if (directory == null)
 			{

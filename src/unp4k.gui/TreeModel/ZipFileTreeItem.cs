@@ -58,7 +58,7 @@ namespace unp4k.gui.TreeModel
 
 			foreach (ZipEntry entry in zipFile)
 			{
-				AddStream(entry.Name, () => zipFile.GetInputStream(entry), entry.DateTime.ToUniversalTime(), entry.Size);
+				AddStream(entry.Name, () => zipFile.GetInputStream(entry), entry.DateTime.ToUniversalTime(), entry.Size); //46 % CPU
 
 				lastIndex = entry.ZipFileIndex;
 			}
