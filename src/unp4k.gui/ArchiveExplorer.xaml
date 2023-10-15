@@ -8,15 +8,13 @@
 		xmlns:converters="clr-namespace:unp4k.gui.Converters"
         xmlns:sd="http://icsharpcode.net/sharpdevelop/treeview"
         mc:Ignorable="d"
-        Title="unp4k by /u/alluran and mageInt"
+        Title="unp4k"
 		MinHeight="400"
 		MinWidth="400"
 		Height="600"
-		Width="600"
-		>
+		Width="600">
 
 	<Window.Resources>
-
 		<converters:LongToHumanReadableSizeConverter x:Key="LongToHumanReadableSizeConverter"></converters:LongToHumanReadableSizeConverter>
 
 		<RoutedUICommand x:Key="ExitApplication" Text="E_xit">
@@ -27,6 +25,11 @@
 		<RoutedUICommand x:Key="OpenArchive" Text="_Open Archive">
 			<RoutedUICommand.InputGestures>
 				<KeyGesture>CTRL+O</KeyGesture>
+			</RoutedUICommand.InputGestures>
+		</RoutedUICommand>
+		<RoutedUICommand x:Key="OpenAbout" Text="_About">
+			<RoutedUICommand.InputGestures>
+				<KeyGesture>CTRL+I</KeyGesture>
 			</RoutedUICommand.InputGestures>
 		</RoutedUICommand>
 		<RoutedUICommand x:Key="FilterArchive" Text="_Find">
@@ -63,6 +66,7 @@
 		<CommandBinding Command="{StaticResource OpenArchive}" Executed="cmdOpenArchive_Executed" />
 		<CommandBinding Command="{StaticResource FilterArchive}" Executed="cmdFilterArchive_Executed"/>
 		<CommandBinding Command="{StaticResource ExitApplication}" Executed="cmdExitApplication_Executed" />
+		<CommandBinding Command="{StaticResource OpenAbout}" Executed="cmdOpenAbout_Executed" />
 	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -88,6 +92,9 @@
 					<MenuItem Command="{StaticResource OpenArchive}" InputGestureText="Ctrl+O" />
 					<Separator />
 					<MenuItem Command="{StaticResource ExitApplication}" InputGestureText="Alt+F4" />
+				</MenuItem>
+				<MenuItem Header="_Infos">
+					<MenuItem Command="{StaticResource OpenAbout}" InputGestureText="Ctrl+I" />
 				</MenuItem>
 			</Menu>
 		</DockPanel>

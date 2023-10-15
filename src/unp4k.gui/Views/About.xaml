@@ -1,0 +1,13 @@
+﻿<Window x:Class="unp4k.gui.Views.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:unp4k.gui.Views"
+        mc:Ignorable="d"
+        Title="About" Height="450" Width="800">
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Created by Peter Dolkens and updated by mageInt" Height="Auto" Width="Auto" TextAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,0"/>
+
+    </Grid>
+</Window>

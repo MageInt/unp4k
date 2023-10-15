@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using unp4k.gui.Extensions;
 using unp4k.gui.TreeModel;
+using unp4k.gui.Views;
 using Path = System.IO.Path;
 
 namespace unp4k.gui
@@ -428,6 +429,12 @@ namespace unp4k.gui
 		private void cmdExitApplication_Executed(Object sender, ExecutedRoutedEventArgs e)
 		{
 			Application.Current.Shutdown();
+		}
+
+		private void cmdOpenAbout_Executed(Object sender, ExecutedRoutedEventArgs e)
+		{
+			About AboutWindow = new About();
+			AboutWindow.ShowDialog();
 		}
 
 		private void cmdFilterArchive_Executed(object sender, ExecutedRoutedEventArgs e)
