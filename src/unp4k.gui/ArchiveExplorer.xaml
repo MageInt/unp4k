@@ -145,6 +145,6 @@
 		</sd:SharpTreeView>
 
 		<ProgressBar Name="barProgress" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" Margin="0,5,0,0" Grid.RowSpan="2" />
-		<TextBlock Name="lblProgress" VerticalAlignment="Center" Grid.Column="2" Grid.Row="6" Text="Ready" Margin="204,0,253,0" />
+		<TextBlock Name="lblProgress" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="2" Grid.Row="6" Text="Ready"  />
 	</Grid>
 </Window>
