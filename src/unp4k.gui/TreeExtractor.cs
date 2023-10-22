@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using unp4k.gui.Extensions;
 using unp4k.gui.Plugins;
@@ -111,7 +112,17 @@ namespace unp4k.gui
 
 				ArchiveExplorer.RegisterProgress(oldProgress);
 
-				if (useTemp && (File.Exists(path) || Directory.Exists(path))) System.Diagnostics.Process.Start(path);
+				if (useTemp && (File.Exists(path) || Directory.Exists(path)))
+				{
+					try
+					{
+						System.Diagnostics.Process.Start(path);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message ?? "", ex.Source ?? "");
+					}
+				}
 			}
 
 			return result ?? false;
