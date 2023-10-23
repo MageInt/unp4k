@@ -15,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using unp4k.gui.Extensions;
 using unp4k.gui.TreeModel;
+using unp4k.gui.Views;
 using Path = System.IO.Path;
 
 namespace unp4k.gui
@@ -56,7 +57,7 @@ namespace unp4k.gui
 
 			InitializeComponent();
 
-			this.Icon = IconManager.GetCachedFileIcon("data.zip", IconManager.IconSize.Large);
+			Icon = IconManager.GetCachedFileIcon("data.zip", IconManager.IconSize.Large);
 
 			trvFileExploder.Focus();
 
@@ -66,31 +67,31 @@ namespace unp4k.gui
 				{
 					await Task.Delay(FILTER_PING);
 
-					while (this._lastFilterText != this._activeFilterText)
+					while (_lastFilterText != _activeFilterText)
 					{
-						var now = this._lastFilterTime ?? DateTime.Now;
+						var now = _lastFilterTime ?? DateTime.Now;
 
 						while ((DateTime.Now - now).TotalMilliseconds < FILTER_DELAY)
 						{
 							await Task.Delay(FILTER_PING);
-							now = this._lastFilterTime ?? DateTime.Now;
+							now = _lastFilterTime ?? DateTime.Now;
 						}
 
-						if (this._root != null)
+						if (_root != null)
 						{
-							var filterText = this._lastFilterText;
+							var filterText = _lastFilterText;
 
 							var sw = new Stopwatch();
 
 							sw.Start();
 
-							var allChildren = this._root.AllChildren.ToArray();
+							var allChildren = _root.AllChildren.ToArray();
 
-							await this.Dispatcher.Invoke(async () =>
+							await Dispatcher.Invoke(async () =>
 							{
 								foreach (var child in allChildren)
 								{
-									child.IsHidden = !this.Filter(child);
+									child.IsHidden = !Filter(child);
 								}
 							});
 
@@ -100,7 +101,7 @@ namespace unp4k.gui
 
 							await ArchiveExplorer.UpdateStatus($"Filter took {sw.ElapsedMilliseconds:#,##0}ms");
 
-							this._activeFilterText = filterText;
+							_activeFilterText = filterText;
 						}
 
 						await Task.Delay(FILTER_PING);
@@ -112,9 +113,9 @@ namespace unp4k.gui
 			{
 				while (true)
 				{
-					await this.Dispatcher.Invoke(async () =>
+					await Dispatcher.Invoke(async () =>
 					{
-						await ArchiveExplorer._updateDelegate(this.barProgress);
+						await ArchiveExplorer._updateDelegate(barProgress);
 					});
 
 					await Task.Delay(100);
@@ -124,16 +125,16 @@ namespace unp4k.gui
 
 		~ArchiveExplorer()
 		{
-			if (this._pak != null)
+			if (_pak != null)
 			{
-				this._pak.Close();
-				this._pak = null;
+				_pak.Close();
+				_pak = null;
 			}
 
-			if (this._pakFile != null)
+			if (_pakFile != null)
 			{
-				this._pakFile.Dispose();
-				this._pakFile = null;
+				_pakFile.Dispose();
+				_pakFile = null;
 			}
 		}
 
@@ -161,37 +162,37 @@ namespace unp4k.gui
 			});
 		}
 
-		public async Task OpenP4kAsync(String path)
+		public async Task OpenP4kAsync(string path)
 		{
-			var treeView = this.trvFileExploder;
+			var treeView = trvFileExploder;
 			FileStream pakFile = File.OpenRead(path);
 			ZipFile pak = new ZipFile(pakFile) { Key = new Byte[] { 0x5E, 0x7A, 0x20, 0x02, 0x30, 0x2E, 0xEB, 0x1A, 0x3B, 0xB6, 0x17, 0xC3, 0x0F, 0xDE, 0x1E, 0x47 } };
 
 			ZipFileTreeItem root = new ZipFileTreeItem(pak, Path.GetFileName(path));
 			
-			var filter = this._lastFilterText;
+			var filter = _lastFilterText;
 			
 			if (filter.Equals("Filter...", StringComparison.InvariantCultureIgnoreCase)) filter = null;
 
-			await this.Dispatcher.Invoke(async () =>
+			await Dispatcher.Invoke(async () =>
 			{
-				if (this._pak != null)
+				if (_pak != null)
 				{
-					this._pak.Close();
-					this._pak = null;
+					_pak.Close();
+					_pak = null;
 				}
 
-				if (this._pakFile != null)
+				if (_pakFile != null)
 				{
-					this._pakFile.Dispose();
-					this._pakFile = null;
+					_pakFile.Dispose();
+					_pakFile = null;
 				}
 
-				this._pak = pak;
-				this._pakFile = pakFile;
+				_pak = pak;
+				_pakFile = pakFile;
 
-				this._extractor = new TreeExtractor(pak, this.Filter);
-				this._root = root;
+				_extractor = new TreeExtractor(pak, Filter);
+				_root = root;
 
 				treeView.Root = root;
 
@@ -204,7 +205,7 @@ namespace unp4k.gui
 
 		public Predicate<Object> Filter => (Object n) =>
 		{
-			var filter = this._lastFilterText;
+			var filter = _lastFilterText;
 
 			if (String.IsNullOrWhiteSpace(filter)) return true;
 
@@ -248,7 +249,7 @@ namespace unp4k.gui
 			if (openFileDialog.ShowDialog() == true)
 			{
 				// Move to background thread
-				new Thread(async () => await this.OpenP4kAsync(openFileDialog.FileName)).Start();
+				new Thread(async () => await OpenP4kAsync(openFileDialog.FileName)).Start();
 			}
 
 			await Task.CompletedTask;
@@ -265,7 +266,7 @@ namespace unp4k.gui
 			{
 				foreach (ITreeItem selectedItem in selectedItems)
 				{
-					var result = await this._extractor.ExtractNodeAsync(selectedItem, false);
+					var result = await _extractor.ExtractNodeAsync(selectedItem, false);
 					
 					// TODO: Handle false(error) results
 				}
@@ -287,7 +288,7 @@ namespace unp4k.gui
 				
 				foreach (ITreeItem selectedItem in selectedItems)
 				{
-					result &= await this._extractor.ExtractNodeAsync(selectedItem, true);
+					result &= await _extractor.ExtractNodeAsync(selectedItem, true);
 				}
 				
 				// TODO: Handle false(error) results
@@ -364,10 +365,10 @@ namespace unp4k.gui
 			var filter = txtFilter.Text;
 			if (filter.Equals("Filter...", StringComparison.InvariantCultureIgnoreCase)) filter = String.Empty;
 
-			if (filter == this._lastFilterText) return;
+			if (filter == _lastFilterText) return;
 
-			this._lastFilterTime = DateTime.Now;
-			this._lastFilterText = filter;
+			_lastFilterTime = DateTime.Now;
+			_lastFilterText = filter;
 
 			await Task.CompletedTask;
 		}
@@ -428,6 +429,12 @@ namespace unp4k.gui
 		private void cmdExitApplication_Executed(Object sender, ExecutedRoutedEventArgs e)
 		{
 			Application.Current.Shutdown();
+		}
+
+		private void cmdOpenAbout_Executed(Object sender, ExecutedRoutedEventArgs e)
+		{
+			About AboutWindow = new About();
+			AboutWindow.ShowDialog();
 		}
 
 		private void cmdFilterArchive_Executed(object sender, ExecutedRoutedEventArgs e)

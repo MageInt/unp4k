@@ -16,7 +16,7 @@ namespace unp4k.gui.TreeModel
 {
 	public class DataForgeTreeItem : StreamTreeItem, IStreamTreeItem, IBranchItem, ITreeItem
 	{
-		public override String RelativePath => this.ParentTreeItem.RelativePath;
+		public override String RelativePath => ParentTreeItem.RelativePath;
 		public virtual Boolean Expanded { get; set; }
 		
 		public DataForgeTreeItem(IStreamTreeItem node, unforge.DataForge dataForge)
@@ -41,7 +41,7 @@ namespace unp4k.gui.TreeModel
 
 			foreach ((String FileName, XmlDocument XmlDocument) entry in dataForge)
 			{
-				this.AddStream(
+				AddStream(
 					entry.FileName,
 					() => entry.XmlDocument.GetStream(),
 					node.LastModifiedUtc,
@@ -54,7 +54,7 @@ namespace unp4k.gui.TreeModel
 
 			ArchiveExplorer.RegisterProgress(oldProgress);
 
-			ArchiveExplorer.UpdateStatus($"Deserialized {this.Text} in {sw.ElapsedMilliseconds:#,000}ms").Wait();
+			ArchiveExplorer.UpdateStatus($"Deserialized {Text} in {sw.ElapsedMilliseconds:#,000}ms").Wait();
 		}
 	}
 

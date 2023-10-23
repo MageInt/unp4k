@@ -18,10 +18,10 @@ namespace unp4k.gui.TreeModel
 
 	public class StreamTreeItem : TreeItem, IStreamTreeItem
 	{
-		public Stream Stream => this._streamDelegate();
+		public Stream Stream => _streamDelegate();
 
 		public override Object Icon => IconManager.GetCachedFileIcon(
-			path: this.Title,
+			path: Title,
 			iconSize: IconManager.IconSize.Large);
 
 		private Func<Stream> _streamDelegate;
@@ -60,10 +60,10 @@ namespace unp4k.gui.TreeModel
 		public StreamTreeItem(String title, Func<Stream> @delegate, DateTime lastModifiedUtc, Int64 streamLength)
 			: base(title)
 		{
-			this.StreamLength = streamLength;
-			this.LastModifiedUtc = lastModifiedUtc;
+			StreamLength = streamLength;
+			LastModifiedUtc = lastModifiedUtc;
 
-			this._streamDelegate = () =>
+			_streamDelegate = () =>
 			{
 				var targetStream = @delegate();
 

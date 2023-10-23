@@ -10,24 +10,24 @@ namespace unp4k.gui.TreeModel
 	{
 		public virtual Boolean Expanded { get; set; } = false;
 
-		public override DateTime LastModifiedUtc => this.AllChildren
+		public override DateTime LastModifiedUtc => AllChildren
 			.OfType<IStreamTreeItem>()
 			.Max(t => t.LastModifiedUtc);
 
-		public override Int64 StreamLength => this.AllChildren
+		public override Int64 StreamLength => AllChildren
 			.OfType<IStreamTreeItem>()
 			.Sum(t => t.StreamLength);
 
 		private String _sortKey;
 		public override String SortKey =>
-			this._sortKey = this._sortKey ??
-			$"{this.ParentTreeItem?.SortKey}\\__{this.Text}".Trim('\\');
+			_sortKey = _sortKey ??
+			$"{ParentTreeItem?.SortKey}\\__{Text}".Trim('\\');
 
 		private ImageSource _icon;
 		public override Object Icon =>
-			this._icon = this._icon ?? 
+			_icon = _icon ?? 
 			IconManager.GetCachedFolderIcon(
-				path: this.RelativePath, 
+				path: RelativePath, 
 				iconSize: IconManager.IconSize.Large,
 				folderType: IconManager.FolderType.Closed);
 

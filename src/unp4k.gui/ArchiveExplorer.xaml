@@ -8,15 +8,13 @@
 		xmlns:converters="clr-namespace:unp4k.gui.Converters"
         xmlns:sd="http://icsharpcode.net/sharpdevelop/treeview"
         mc:Ignorable="d"
-        Title="unp4k by /u/alluran and mageInt"
+        Title="unp4k"
 		MinHeight="400"
 		MinWidth="400"
 		Height="600"
-		Width="600"
-		>
+		Width="600">
 
 	<Window.Resources>
-
 		<converters:LongToHumanReadableSizeConverter x:Key="LongToHumanReadableSizeConverter"></converters:LongToHumanReadableSizeConverter>
 
 		<RoutedUICommand x:Key="ExitApplication" Text="E_xit">
@@ -27,6 +25,11 @@
 		<RoutedUICommand x:Key="OpenArchive" Text="_Open Archive">
 			<RoutedUICommand.InputGestures>
 				<KeyGesture>CTRL+O</KeyGesture>
+			</RoutedUICommand.InputGestures>
+		</RoutedUICommand>
+		<RoutedUICommand x:Key="OpenAbout" Text="_About">
+			<RoutedUICommand.InputGestures>
+				<KeyGesture>CTRL+I</KeyGesture>
 			</RoutedUICommand.InputGestures>
 		</RoutedUICommand>
 		<RoutedUICommand x:Key="FilterArchive" Text="_Find">
@@ -63,6 +66,7 @@
 		<CommandBinding Command="{StaticResource OpenArchive}" Executed="cmdOpenArchive_Executed" />
 		<CommandBinding Command="{StaticResource FilterArchive}" Executed="cmdFilterArchive_Executed"/>
 		<CommandBinding Command="{StaticResource ExitApplication}" Executed="cmdExitApplication_Executed" />
+		<CommandBinding Command="{StaticResource OpenAbout}" Executed="cmdOpenAbout_Executed" />
 	</Window.CommandBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -88,6 +92,9 @@
 					<MenuItem Command="{StaticResource OpenArchive}" InputGestureText="Ctrl+O" />
 					<Separator />
 					<MenuItem Command="{StaticResource ExitApplication}" InputGestureText="Alt+F4" />
+				</MenuItem>
+				<MenuItem Header="_Infos">
+					<MenuItem Command="{StaticResource OpenAbout}" InputGestureText="Ctrl+I" />
 				</MenuItem>
 			</Menu>
 		</DockPanel>
@@ -120,7 +127,7 @@
 						<GridViewColumn Header="Date modified" HeaderContainerStyle="{StaticResource styTreeView}" Width="Auto">
 							<GridViewColumn.CellTemplate>
 								<DataTemplate>
-									<TextBlock Text="{Binding LastModifiedUtc,StringFormat=g}" TextAlignment="Right" ContextMenu="{StaticResource mnuLeaf}" />
+									<TextBlock Text="{Binding LastModifiedUtc,StringFormat=yyyy/MM/dd HH:mm}" TextAlignment="Right" ContextMenu="{StaticResource mnuLeaf}" />
 								</DataTemplate>
 							</GridViewColumn.CellTemplate>
 						</GridViewColumn>
@@ -138,6 +145,6 @@
 		</sd:SharpTreeView>
 
 		<ProgressBar Name="barProgress" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" Margin="0,5,0,0" Grid.RowSpan="2" />
-		<TextBlock Name="lblProgress" VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="2" Grid.Row="6" Text="Ready" Margin="204,0,0,0" />
+		<TextBlock Name="lblProgress" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="6" Text="Ready"  />
 	</Grid>
 </Window>

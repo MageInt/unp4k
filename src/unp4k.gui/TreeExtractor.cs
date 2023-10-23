@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using unp4k.gui.Extensions;
 using unp4k.gui.Plugins;
@@ -28,8 +29,8 @@ namespace unp4k.gui
 
 		public TreeExtractor(ZipFile pak, Predicate<Object> filter)
 		{
-			this._pak = pak;
-			this.Filter = filter;
+			_pak = pak;
+			Filter = filter;
 		}
 
 		private Int32 _filesSelected;
@@ -86,15 +87,15 @@ namespace unp4k.gui
 
 			if (result == true)
 			{
-				this._filesSelected = await this.CountNodesAsync(selectedItem);
-				this._filesExtracted = 0;
+				_filesSelected = await CountNodesAsync(selectedItem);
+				_filesExtracted = 0;
 
 				var oldProgress = ArchiveExplorer.RegisterProgress(async (ProgressBar barProgress) =>
 				{
-					barProgress.Maximum = this._filesSelected + 1; // Add 1 as we increment early
-					barProgress.Value = this._filesExtracted;
+					barProgress.Maximum = _filesSelected + 1; // Add 1 as we increment early
+					barProgress.Value = _filesExtracted;
 
-					await ArchiveExplorer.UpdateStatus($"Extracting file {this._filesExtracted:#,##0}/{this._filesSelected:#,##0} from archive");
+					await ArchiveExplorer.UpdateStatus($"Extracting file {_filesExtracted:#,##0}/{_filesSelected:#,##0} from archive");
 
 					await Task.CompletedTask;
 				});
@@ -103,15 +104,25 @@ namespace unp4k.gui
 
 				sw.Start();
 
-				result &= await this.ExtractNodeAsync(selectedItem, path, extractMode);
+				result &= await ExtractNodeAsync(selectedItem, path, extractMode);
 
 				sw.Stop();
 
-				await ArchiveExplorer.UpdateStatus($"Extracted {this._filesExtracted:#,##0} files in {sw.ElapsedMilliseconds:#,000}ms");
+				await ArchiveExplorer.UpdateStatus($"Extracted {_filesExtracted:#,##0} files in {sw.ElapsedMilliseconds:#,000}ms");
 
 				ArchiveExplorer.RegisterProgress(oldProgress);
 
-				if (useTemp && (File.Exists(path) || Directory.Exists(path))) System.Diagnostics.Process.Start(path);
+				if (useTemp && (File.Exists(path) || Directory.Exists(path)))
+				{
+					try
+					{
+						System.Diagnostics.Process.Start(path);
+					}
+					catch (Exception ex)
+					{
+						MessageBox.Show(ex.Message ?? "", ex.Source ?? "");
+					}
+				}
 			}
 
 			return result ?? false;
@@ -120,29 +131,29 @@ namespace unp4k.gui
 		private async Task<Int32> CountNodesAsync(ITreeItem node)
 		{
 			// Early exit if we don't match the filter
-			if (!this.Filter(node)) return 0;
+			if (!Filter(node)) return 0;
 
 			await Task.CompletedTask;
 
 			return node.AllChildren
 				.OfType<IStreamTreeItem>()
-				.Where(n => this.Filter(n))
+				.Where(n => Filter(n))
 				.Count();
 		}
 
 		private async Task<Boolean> ExtractNodeAsync(ITreeItem node, String outputRoot, ExtractModeEnum extractMode, String rootPath = null)
 		{
 			// Early exit if we don't match the filter
-			if (!this.Filter(node)) return true;
+			if (!Filter(node)) return true;
 
 			if (node is IStreamTreeItem leaf)
 			{
-				return await this.ExtractNodeAsync(leaf, outputRoot, extractMode, rootPath);
+				return await ExtractNodeAsync(leaf, outputRoot, extractMode, rootPath);
 			}
 
 			if (node is IBranchItem branch)
 			{
-				return await this.ExtractNodeAsync(branch, outputRoot, extractMode, rootPath);
+				return await ExtractNodeAsync(branch, outputRoot, extractMode, rootPath);
 			}
 
 			return false;
@@ -155,7 +166,7 @@ namespace unp4k.gui
 
 		private async Task<Boolean> ExtractNodeAsync(IStreamTreeItem node, String outputRoot, ExtractModeEnum extractMode, String rootPath)
 		{
-			this._filesExtracted += 1;
+			_filesExtracted += 1;
 
 			var forgeFactory = new DataForgeFormatFactory { };
 			var cryxmlFactory = new CryXmlFormatFactory { };
@@ -233,7 +244,7 @@ namespace unp4k.gui
 			
 			foreach (var child in node.Children.OfType<ITreeItem>())
 			{
-				result &= await this.ExtractNodeAsync(child, outputRoot, extractMode, rootPath);
+				result &= await ExtractNodeAsync(child, outputRoot, extractMode, rootPath);
 			}
 
 			return result;
