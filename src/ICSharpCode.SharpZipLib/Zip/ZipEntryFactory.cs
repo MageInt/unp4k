@@ -1,6 +1,6 @@
+using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -91,12 +91,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <remarks>
 		/// Setting this property to null will cause a default <see cref="ZipNameTransform">name transform</see> to be used.
 		/// </remarks>
-		public INameTransform NameTransform {
+		public INameTransform NameTransform
+		{
 			get { return nameTransform_; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					nameTransform_ = new ZipNameTransform();
-				} else {
+				}
+				else
+				{
 					nameTransform_ = value;
 				}
 			}
@@ -105,7 +110,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="TimeSetting"/> in use.
 		/// </summary>
-		public TimeSetting Setting {
+		public TimeSetting Setting
+		{
 			get { return timeSetting_; }
 			set { timeSetting_ = value; }
 		}
@@ -113,10 +119,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get / set the <see cref="DateTime"/> value to use when <see cref="Setting"/> is set to <see cref="TimeSetting.Fixed"/>
 		/// </summary>
-		public DateTime FixedDateTime {
+		public DateTime FixedDateTime
+		{
 			get { return fixedDateTime_; }
-			set {
-				if (value.Year < 1970) {
+			set
+			{
+				if (value.Year < 1970)
+				{
 					throw new ArgumentException("Value is too old to be valid", nameof(value));
 				}
 				fixedDateTime_ = value;
@@ -127,7 +136,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A bitmask defining the attributes to be retrieved from the actual file.
 		/// </summary>
 		/// <remarks>The default is to get all possible attributes from the actual file.</remarks>
-		public int GetAttributes {
+		public int GetAttributes
+		{
 			get { return getAttributes_; }
 			set { getAttributes_ = value; }
 		}
@@ -136,7 +146,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// A bitmask defining which attributes are to be set on.
 		/// </summary>
 		/// <remarks>By default no attributes are set on.</remarks>
-		public int SetAttributes {
+		public int SetAttributes
+		{
 			get { return setAttributes_; }
 			set { setAttributes_ = value; }
 		}
@@ -144,7 +155,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Get set a value indicating wether unidoce text should be set on.
 		/// </summary>
-		public bool IsUnicodeText {
+		public bool IsUnicodeText
+		{
 			get { return isUnicodeText_; }
 			set { isUnicodeText_ = value; }
 		}
@@ -190,12 +202,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 			bool useAttributes = (setAttributes_ != 0);
 
 			FileInfo fi = null;
-			if (useFileSystem) {
+			if (useFileSystem)
+			{
 				fi = new FileInfo(fileName);
 			}
 
-			if ((fi != null) && fi.Exists) {
-				switch (timeSetting_) {
+			if ((fi != null) && fi.Exists)
+			{
+				switch (timeSetting_)
+				{
 					case TimeSetting.CreateTime:
 						result.DateTime = fi.CreationTime;
 						break;
@@ -232,13 +247,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 				useAttributes = true;
 				externalAttributes = ((int)fi.Attributes & getAttributes_);
-			} else {
-				if (timeSetting_ == TimeSetting.Fixed) {
+			}
+			else
+			{
+				if (timeSetting_ == TimeSetting.Fixed)
+				{
 					result.DateTime = fixedDateTime_;
 				}
 			}
 
-			if (useAttributes) {
+			if (useAttributes)
+			{
 				externalAttributes |= setAttributes_;
 				result.ExternalFileAttributes = externalAttributes;
 			}
@@ -273,13 +292,16 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			DirectoryInfo di = null;
 
-			if (useFileSystem) {
+			if (useFileSystem)
+			{
 				di = new DirectoryInfo(directoryName);
 			}
 
 
-			if ((di != null) && di.Exists) {
-				switch (timeSetting_) {
+			if ((di != null) && di.Exists)
+			{
+				switch (timeSetting_)
+				{
 					case TimeSetting.CreateTime:
 						result.DateTime = di.CreationTime;
 						break;
@@ -313,8 +335,11 @@ namespace ICSharpCode.SharpZipLib.Zip
 				}
 
 				externalAttributes = ((int)di.Attributes & getAttributes_);
-			} else {
-				if (timeSetting_ == TimeSetting.Fixed) {
+			}
+			else
+			{
+				if (timeSetting_ == TimeSetting.Fixed)
+				{
 					result.DateTime = fixedDateTime_;
 				}
 			}

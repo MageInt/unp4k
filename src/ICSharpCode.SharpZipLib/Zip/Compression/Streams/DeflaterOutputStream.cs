@@ -1,7 +1,7 @@
+using ICSharpCode.SharpZipLib.Encryption;
 using System;
 using System.IO;
 using System.Security.Cryptography;
-using ICSharpCode.SharpZipLib.Encryption;
 
 namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 {
@@ -63,19 +63,23 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </exception>
 		public DeflaterOutputStream(Stream baseOutputStream, Deflater deflater, int bufferSize)
 		{
-			if (baseOutputStream == null) {
+			if (baseOutputStream == null)
+			{
 				throw new ArgumentNullException(nameof(baseOutputStream));
 			}
 
-			if (baseOutputStream.CanWrite == false) {
+			if (baseOutputStream.CanWrite == false)
+			{
 				throw new ArgumentException("Must support writing", nameof(baseOutputStream));
 			}
 
-			if (deflater == null) {
+			if (deflater == null)
+			{
 				throw new ArgumentNullException(nameof(deflater));
 			}
 
-			if (bufferSize < 512) {
+			if (bufferSize < 512)
+			{
 				throw new ArgumentOutOfRangeException(nameof(bufferSize));
 			}
 
@@ -95,27 +99,33 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		public virtual void Finish()
 		{
 			deflater_.Finish();
-			while (!deflater_.IsFinished) {
+			while (!deflater_.IsFinished)
+			{
 				int len = deflater_.Deflate(buffer_, 0, buffer_.Length);
-				if (len <= 0) {
+				if (len <= 0)
+				{
 					break;
 				}
 
-				if (cryptoTransform_ != null) {
+				if (cryptoTransform_ != null)
+				{
 					EncryptBlock(buffer_, 0, len);
 				}
 
 				baseOutputStream_.Write(buffer_, 0, len);
 			}
 
-			if (!deflater_.IsFinished) {
+			if (!deflater_.IsFinished)
+			{
 				throw new SharpZipBaseException("Can't deflate all input?");
 			}
 
 			baseOutputStream_.Flush();
 
-			if (cryptoTransform_ != null) {
-				if (cryptoTransform_ is ZipAESTransform) {
+			if (cryptoTransform_ != null)
+			{
+				if (cryptoTransform_ is ZipAESTransform)
+				{
 					AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
 				}
 				cryptoTransform_.Dispose();
@@ -133,8 +143,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		///	<summary>
 		/// Allows client to determine if an entry can be patched after its added
 		/// </summary>
-		public bool CanPatchEntries {
-			get {
+		public bool CanPatchEntries
+		{
+			get
+			{
 				return baseOutputStream_.CanSeek;
 			}
 		}
@@ -156,14 +168,20 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Get/set the password used for encryption.
 		/// </summary>
 		/// <remarks>When set to null or if the password is empty no encryption is performed</remarks>
-		public string Password {
-			get {
+		public string Password
+		{
+			get
+			{
 				return password;
 			}
-			set {
-				if ((value != null) && (value.Length == 0)) {
+			set
+			{
+				if ((value != null) && (value.Length == 0))
+				{
 					password = null;
-				} else {
+				}
+				else
+				{
 					password = value;
 				}
 			}
@@ -224,20 +242,24 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected void Deflate()
 		{
-			while (!deflater_.IsNeedingInput) {
+			while (!deflater_.IsNeedingInput)
+			{
 				int deflateCount = deflater_.Deflate(buffer_, 0, buffer_.Length);
 
-				if (deflateCount <= 0) {
+				if (deflateCount <= 0)
+				{
 					break;
 				}
-				if (cryptoTransform_ != null) {
+				if (cryptoTransform_ != null)
+				{
 					EncryptBlock(buffer_, 0, deflateCount);
 				}
 
 				baseOutputStream_.Write(buffer_, 0, deflateCount);
 			}
 
-			if (!deflater_.IsNeedingInput) {
+			if (!deflater_.IsNeedingInput)
+			{
 				throw new SharpZipBaseException("DeflaterOutputStream can't deflate all input?");
 			}
 		}
@@ -247,8 +269,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Gets value indicating stream can be read from
 		/// </summary>
-		public override bool CanRead {
-			get {
+		public override bool CanRead
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -257,8 +281,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Gets a value indicating if seeking is supported for this stream
 		/// This property always returns false
 		/// </summary>
-		public override bool CanSeek {
-			get {
+		public override bool CanSeek
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -266,8 +292,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Get value indicating if this stream supports writing
 		/// </summary>
-		public override bool CanWrite {
-			get {
+		public override bool CanWrite
+		{
+			get
+			{
 				return baseOutputStream_.CanWrite;
 			}
 		}
@@ -275,8 +303,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// <summary>
 		/// Get current length of stream
 		/// </summary>
-		public override long Length {
-			get {
+		public override long Length
+		{
+			get
+			{
 				return baseOutputStream_.Length;
 			}
 		}
@@ -285,11 +315,14 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// Gets the current position within the stream.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any attempt to set position</exception>
-		public override long Position {
-			get {
+		public override long Position
+		{
+			get
+			{
 				return baseOutputStream_.Position;
 			}
-			set {
+			set
+			{
 				throw new NotSupportedException("Position property not supported");
 			}
 		}
@@ -356,18 +389,24 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
-			if (!isClosed_) {
+			if (!isClosed_)
+			{
 				isClosed_ = true;
 
-				try {
+				try
+				{
 					Finish();
-					if (cryptoTransform_ != null) {
+					if (cryptoTransform_ != null)
+					{
 						GetAuthCodeIfAES();
 						cryptoTransform_.Dispose();
 						cryptoTransform_ = null;
 					}
-				} finally {
-					if (IsStreamOwner) {
+				}
+				finally
+				{
+					if (IsStreamOwner)
+					{
 						baseOutputStream_.Dispose();
 					}
 				}
@@ -376,7 +415,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression.Streams
 
 		private void GetAuthCodeIfAES()
 		{
-			if (cryptoTransform_ is ZipAESTransform) {
+			if (cryptoTransform_ is ZipAESTransform)
+			{
 				AESAuthCode = ((ZipAESTransform)cryptoTransform_).GetAuthCode();
 			}
 		}

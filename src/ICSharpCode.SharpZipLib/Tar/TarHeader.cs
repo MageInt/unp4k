@@ -265,10 +265,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set the name for this tar entry.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set the property to null.</exception>
-		public string Name {
+		public string Name
+		{
 			get { return name; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					throw new ArgumentNullException(nameof(value));
 				}
 				name = value;
@@ -288,7 +291,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's Unix style permission mode.
 		/// </summary>
-		public int Mode {
+		public int Mode
+		{
 			get { return mode; }
 			set { mode = value; }
 		}
@@ -301,7 +305,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This is only directly relevant to unix systems.
 		/// The default is zero.
 		/// </remarks>
-		public int UserId {
+		public int UserId
+		{
 			get { return userId; }
 			set { userId = value; }
 		}
@@ -314,7 +319,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// This is only directly relevant to linux/unix systems.
 		/// The default value is zero.
 		/// </remarks>
-		public int GroupId {
+		public int GroupId
+		{
 			get { return groupId; }
 			set { groupId = value; }
 		}
@@ -324,10 +330,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set the entry's size.
 		/// </summary>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the size to less than zero.</exception>
-		public long Size {
+		public long Size
+		{
 			get { return size; }
-			set {
-				if (value < 0) {
+			set
+			{
+				if (value < 0)
+				{
 					throw new ArgumentOutOfRangeException(nameof(value), "Cannot be less than zero");
 				}
 				size = value;
@@ -342,10 +351,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The modification time is only accurate to within a second.
 		/// </remarks>
 		/// <exception cref="ArgumentOutOfRangeException">Thrown when setting the date time to less than 1/1/1970.</exception>
-		public DateTime ModTime {
+		public DateTime ModTime
+		{
 			get { return modTime; }
-			set {
-				if (value < dateTime1970) {
+			set
+			{
+				if (value < dateTime1970)
+				{
 					throw new ArgumentOutOfRangeException(nameof(value), "ModTime cannot be before Jan 1st 1970");
 				}
 				modTime = new DateTime(value.Year, value.Month, value.Day, value.Hour, value.Minute, value.Second);
@@ -356,7 +368,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get the entry's checksum.  This is only valid/updated after writing or reading an entry.
 		/// </summary>
-		public int Checksum {
+		public int Checksum
+		{
 			get { return checksum; }
 		}
 
@@ -364,7 +377,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get value of true if the header checksum is valid, false otherwise.
 		/// </summary>
-		public bool IsChecksumValid {
+		public bool IsChecksumValid
+		{
 			get { return isChecksumValid; }
 		}
 
@@ -372,7 +386,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's type flag.
 		/// </summary>
-		public byte TypeFlag {
+		public byte TypeFlag
+		{
 			get { return typeFlag; }
 			set { typeFlag = value; }
 		}
@@ -382,10 +397,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The entry's link name.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set LinkName to null.</exception>
-		public string LinkName {
+		public string LinkName
+		{
 			get { return linkName; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					throw new ArgumentNullException(nameof(value));
 				}
 				linkName = value;
@@ -397,10 +415,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// Get/set the entry's magic tag.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set Magic to null.</exception>
-		public string Magic {
+		public string Magic
+		{
 			get { return magic; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					throw new ArgumentNullException(nameof(value));
 				}
 				magic = value;
@@ -412,13 +433,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// The entry's version.
 		/// </summary>
 		/// <exception cref="ArgumentNullException">Thrown when attempting to set Version to null.</exception>
-		public string Version {
-			get {
+		public string Version
+		{
+			get
+			{
 				return version;
 			}
 
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					throw new ArgumentNullException(nameof(value));
 				}
 				version = value;
@@ -429,14 +454,20 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// The entry's user name.
 		/// </summary>
-		public string UserName {
+		public string UserName
+		{
 			get { return userName; }
-			set {
-				if (value != null) {
+			set
+			{
+				if (value != null)
+				{
 					userName = value.Substring(0, Math.Min(UNAMELEN, value.Length));
-				} else {
+				}
+				else
+				{
 					string currentUser = "user";
-					if (currentUser.Length > UNAMELEN) {
+					if (currentUser.Length > UNAMELEN)
+					{
 						currentUser = currentUser.Substring(0, UNAMELEN);
 					}
 					userName = currentUser;
@@ -451,12 +482,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <remarks>
 		/// This is only directly relevant to unix systems.
 		/// </remarks>
-		public string GroupName {
+		public string GroupName
+		{
 			get { return groupName; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					groupName = "None";
-				} else {
+				}
+				else
+				{
 					groupName = value;
 				}
 			}
@@ -466,7 +502,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's major device number.
 		/// </summary>
-		public int DevMajor {
+		public int DevMajor
+		{
 			get { return devMajor; }
 			set { devMajor = value; }
 		}
@@ -475,7 +512,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <summary>
 		/// Get/set the entry's minor device number.
 		/// </summary>
-		public int DevMinor {
+		public int DevMinor
+		{
 			get { return devMinor; }
 			set { devMinor = value; }
 		}
@@ -501,7 +539,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </param>
 		public void ParseBuffer(byte[] header)
 		{
-			if (header == null) {
+			if (header == null)
+			{
 				throw new ArgumentNullException(nameof(header));
 			}
 
@@ -547,10 +586,10 @@ namespace ICSharpCode.SharpZipLib.Tar
 				GroupName = ParseName(header, offset, GNAMELEN).ToString();
 				offset += GNAMELEN;
 
-				DevMajor = (int) ParseOctal(header, offset, DEVLEN);
+				DevMajor = (int)ParseOctal(header, offset, DEVLEN);
 				offset += DEVLEN;
 
-				DevMinor = (int) ParseOctal(header, offset, DEVLEN);
+				DevMinor = (int)ParseOctal(header, offset, DEVLEN);
 				offset += DEVLEN;
 
 				string prefix = ParseName(header, offset, PREFIXLEN).ToString();
@@ -566,7 +605,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <param name="outBuffer">output buffer for header information</param>
 		public void WriteHeader(byte[] outBuffer)
 		{
-			if (outBuffer == null) {
+			if (outBuffer == null)
+			{
 				throw new ArgumentNullException(nameof(outBuffer));
 			}
 
@@ -581,7 +621,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			offset = GetOctalBytes(GetCTime(ModTime), outBuffer, offset, MODTIMELEN);
 
 			int csOffset = offset;
-			for (int c = 0; c < CHKSUMLEN; ++c) {
+			for (int c = 0; c < CHKSUMLEN; ++c)
+			{
 				outBuffer[offset++] = (byte)' ';
 			}
 
@@ -593,12 +634,14 @@ namespace ICSharpCode.SharpZipLib.Tar
 			offset = GetNameBytes(UserName, outBuffer, offset, UNAMELEN);
 			offset = GetNameBytes(GroupName, outBuffer, offset, GNAMELEN);
 
-			if ((TypeFlag == LF_CHR) || (TypeFlag == LF_BLK)) {
+			if ((TypeFlag == LF_CHR) || (TypeFlag == LF_BLK))
+			{
 				offset = GetOctalBytes(DevMajor, outBuffer, offset, DEVLEN);
 				offset = GetOctalBytes(DevMinor, outBuffer, offset, DEVLEN);
 			}
 
-			for (; offset < outBuffer.Length;) {
+			for (; offset < outBuffer.Length;)
+			{
 				outBuffer[offset++] = 0;
 			}
 
@@ -627,7 +670,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 			var localHeader = obj as TarHeader;
 
 			bool result;
-			if (localHeader != null) {
+			if (localHeader != null)
+			{
 				result = (name == localHeader.name)
 					&& (mode == localHeader.mode)
 					&& (UserId == localHeader.UserId)
@@ -643,7 +687,9 @@ namespace ICSharpCode.SharpZipLib.Tar
 					&& (GroupName == localHeader.GroupName)
 					&& (DevMajor == localHeader.DevMajor)
 					&& (DevMinor == localHeader.DevMinor);
-			} else {
+			}
+			else
+			{
 				result = false;
 			}
 			return result;
@@ -676,10 +722,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		//
 		static private long ParseBinaryOrOctal(byte[] header, int offset, int length)
 		{
-			if (header[offset] >= 0x80) {
+			if (header[offset] >= 0x80)
+			{
 				// File sizes over 8GB are stored in 8 right-justified bytes of binary indicated by setting the high-order bit of the leftmost byte of a numeric field.
 				long result = 0;
-				for (int pos = length - 8; pos < length; pos++) {
+				for (int pos = length - 8; pos < length; pos++)
+				{
 					result = result << 8 | header[offset + pos];
 				}
 				return result;
@@ -696,7 +744,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The long equivalent of the octal string.</returns>
 		static public long ParseOctal(byte[] header, int offset, int length)
 		{
-			if (header == null) {
+			if (header == null)
+			{
 				throw new ArgumentNullException(nameof(header));
 			}
 
@@ -704,17 +753,22 @@ namespace ICSharpCode.SharpZipLib.Tar
 			bool stillPadding = true;
 
 			int end = offset + length;
-			for (int i = offset; i < end; ++i) {
-				if (header[i] == 0) {
+			for (int i = offset; i < end; ++i)
+			{
+				if (header[i] == 0)
+				{
 					break;
 				}
 
-				if (header[i] == (byte)' ' || header[i] == '0') {
-					if (stillPadding) {
+				if (header[i] == (byte)' ' || header[i] == '0')
+				{
+					if (stillPadding)
+					{
 						continue;
 					}
 
-					if (header[i] == (byte)' ') {
+					if (header[i] == (byte)' ')
+					{
 						break;
 					}
 				}
@@ -744,26 +798,32 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </returns>
 		static public StringBuilder ParseName(byte[] header, int offset, int length)
 		{
-			if (header == null) {
+			if (header == null)
+			{
 				throw new ArgumentNullException(nameof(header));
 			}
 
-			if (offset < 0) {
+			if (offset < 0)
+			{
 				throw new ArgumentOutOfRangeException(nameof(offset), "Cannot be less than zero");
 			}
 
-			if (length < 0) {
+			if (length < 0)
+			{
 				throw new ArgumentOutOfRangeException(nameof(length), "Cannot be less than zero");
 			}
 
-			if (offset + length > header.Length) {
+			if (offset + length > header.Length)
+			{
 				throw new ArgumentException("Exceeds header size", nameof(length));
 			}
 
 			var result = new StringBuilder(length);
 
-			for (int i = offset; i < offset + length; ++i) {
-				if (header[i] == 0) {
+			for (int i = offset; i < offset + length; ++i)
+			{
+				if (header[i] == 0)
+				{
 					break;
 				}
 				result.Append((char)header[i]);
@@ -783,11 +843,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The next free index in the <paramref name="buffer"/></returns>
 		public static int GetNameBytes(StringBuilder name, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
-			if (name == null) {
+			if (name == null)
+			{
 				throw new ArgumentNullException(nameof(name));
 			}
 
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
@@ -805,21 +867,25 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The next free index in the <paramref name="buffer"/></returns>
 		public static int GetNameBytes(string name, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
-			if (name == null) {
+			if (name == null)
+			{
 				throw new ArgumentNullException(nameof(name));
 			}
 
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			int i;
-			
-			for (i = 0 ; i < length && nameOffset + i < name.Length; ++i) {
+
+			for (i = 0; i < length && nameOffset + i < name.Length; ++i)
+			{
 				buffer[bufferOffset + i] = (byte)name[nameOffset + i];
 			}
 
-			for (; i < length; ++i) {
+			for (; i < length; ++i)
+			{
 				buffer[bufferOffset + i] = 0;
 			}
 
@@ -847,11 +913,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public static int GetNameBytes(StringBuilder name, byte[] buffer, int offset, int length)
 		{
 
-			if (name == null) {
+			if (name == null)
+			{
 				throw new ArgumentNullException(nameof(name));
 			}
 
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
@@ -869,11 +937,13 @@ namespace ICSharpCode.SharpZipLib.Tar
 		public static int GetNameBytes(string name, byte[] buffer, int offset, int length)
 		{
 
-			if (name == null) {
+			if (name == null)
+			{
 				throw new ArgumentNullException(nameof(name));
 			}
 
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
@@ -891,16 +961,19 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>The next free index in the buffer.</returns>
 		public static int GetAsciiBytes(string toAdd, int nameOffset, byte[] buffer, int bufferOffset, int length)
 		{
-			if (toAdd == null) {
+			if (toAdd == null)
+			{
 				throw new ArgumentNullException(nameof(toAdd));
 			}
 
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
 			int i;
-			for (i = 0; i < length && nameOffset + i < toAdd.Length; ++i) {
+			for (i = 0; i < length && nameOffset + i < toAdd.Length; ++i)
+			{
 				buffer[bufferOffset + i] = (byte)toAdd[nameOffset + i];
 			}
 			// If length is beyond the toAdd string length (which is OK by the prev loop condition), eg if a field has fixed length and the string is shorter, make sure all of the extra chars are written as NULLs, so that the reader func would ignore them and get back the original string
@@ -929,7 +1002,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// </returns>
 		public static int GetOctalBytes(long value, byte[] buffer, int offset, int length)
 		{
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
@@ -939,14 +1013,17 @@ namespace ICSharpCode.SharpZipLib.Tar
 			buffer[offset + localIndex] = 0;
 			--localIndex;
 
-			if (value > 0) {
-				for (long v = value; (localIndex >= 0) && (v > 0); --localIndex) {
+			if (value > 0)
+			{
+				for (long v = value; (localIndex >= 0) && (v > 0); --localIndex)
+				{
 					buffer[offset + localIndex] = (byte)((byte)'0' + (byte)(v & 7));
 					v >>= 3;
 				}
 			}
 
-			for (; localIndex >= 0; --localIndex) {
+			for (; localIndex >= 0; --localIndex)
+			{
 				buffer[offset + localIndex] = (byte)'0';
 			}
 
@@ -963,9 +1040,11 @@ namespace ICSharpCode.SharpZipLib.Tar
 		/// <returns>Index of next byte</returns>
 		private static int GetBinaryOrOctalBytes(long value, byte[] buffer, int offset, int length)
 		{
-			if (value > 0x1FFFFFFFF) {  // Octal 77777777777 (11 digits)
-										// Put value as binary, right-justified into the buffer. Set high order bit of left-most byte.
-				for (int pos = length - 1; pos > 0; pos--) {
+			if (value > 0x1FFFFFFFF)
+			{  // Octal 77777777777 (11 digits)
+			   // Put value as binary, right-justified into the buffer. Set high order bit of left-most byte.
+				for (int pos = length - 1; pos > 0; pos--)
+				{
 					buffer[offset + pos] = (byte)value;
 					value = value >> 8;
 				}
@@ -1001,7 +1080,8 @@ namespace ICSharpCode.SharpZipLib.Tar
 		static int ComputeCheckSum(byte[] buffer)
 		{
 			int sum = 0;
-			for (int i = 0; i < buffer.Length; ++i) {
+			for (int i = 0; i < buffer.Length; ++i)
+			{
 				sum += buffer[i];
 			}
 			return sum;
@@ -1015,15 +1095,18 @@ namespace ICSharpCode.SharpZipLib.Tar
 		static int MakeCheckSum(byte[] buffer)
 		{
 			int sum = 0;
-			for (int i = 0; i < CHKSUMOFS; ++i) {
+			for (int i = 0; i < CHKSUMOFS; ++i)
+			{
 				sum += buffer[i];
 			}
 
-			for (int i = 0; i < CHKSUMLEN; ++i) {
+			for (int i = 0; i < CHKSUMLEN; ++i)
+			{
 				sum += (byte)' ';
 			}
 
-			for (int i = CHKSUMOFS + CHKSUMLEN; i < buffer.Length; ++i) {
+			for (int i = CHKSUMOFS + CHKSUMLEN; i < buffer.Length; ++i)
+			{
 				sum += buffer[i];
 			}
 			return sum;
@@ -1038,9 +1121,12 @@ namespace ICSharpCode.SharpZipLib.Tar
 		{
 			DateTime result;
 
-			try {
+			try
+			{
 				result = new DateTime(dateTime1970.Ticks + ticks * timeConversionFactor);
-			} catch (ArgumentOutOfRangeException) {
+			}
+			catch (ArgumentOutOfRangeException)
+			{
 				result = dateTime1970;
 			}
 			return result;

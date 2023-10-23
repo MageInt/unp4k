@@ -22,14 +22,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The file or directory name for this event.
 		/// </summary>
-		public string Name {
+		public string Name
+		{
 			get { return name_; }
 		}
 
 		/// <summary>
 		/// Get set a value indicating if scanning should continue or not.
 		/// </summary>
-		public bool ContinueRunning {
+		public bool ContinueRunning
+		{
 			get { return continueRunning_; }
 			set { continueRunning_ = value; }
 		}
@@ -63,14 +65,16 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The name for this event if known.
 		/// </summary>
-		public string Name {
+		public string Name
+		{
 			get { return name_; }
 		}
 
 		/// <summary>
 		/// Get set a value indicating wether scanning should continue or not.
 		/// </summary>
-		public bool ContinueRunning {
+		public bool ContinueRunning
+		{
 			get { return continueRunning_; }
 			set { continueRunning_ = value; }
 		}
@@ -79,12 +83,17 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Get a percentage representing how much of the <see cref="Target"></see> has been processed
 		/// </summary>
 		/// <value>0.0 to 100.0 percent; 0 if target is not known.</value>
-		public float PercentComplete {
-			get {
+		public float PercentComplete
+		{
+			get
+			{
 				float result;
-				if (target_ <= 0) {
+				if (target_ <= 0)
+				{
 					result = 0;
-				} else {
+				}
+				else
+				{
 					result = ((float)processed_ / (float)target_) * 100.0f;
 				}
 				return result;
@@ -94,7 +103,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The number of bytes processed so far
 		/// </summary>
-		public long Processed {
+		public long Processed
+		{
 			get { return processed_; }
 		}
 
@@ -102,7 +112,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// The number of bytes to process.
 		/// </summary>
 		/// <remarks>Target may be 0 or negative if the value isnt known.</remarks>
-		public long Target {
+		public long Target
+		{
 			get { return target_; }
 		}
 
@@ -135,7 +146,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Get a value indicating if the directory contains any matching files or not.
 		/// </summary>
-		public bool HasMatchingFiles {
+		public bool HasMatchingFiles
+		{
 			get { return hasMatchingFiles_; }
 		}
 
@@ -168,21 +180,24 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// The applicable name.
 		/// </summary>
-		public string Name {
+		public string Name
+		{
 			get { return name_; }
 		}
 
 		/// <summary>
 		/// The applicable exception.
 		/// </summary>
-		public Exception Exception {
+		public Exception Exception
+		{
 			get { return exception_; }
 		}
 
 		/// <summary>
 		/// Get / set a value indicating wether scanning should continue.
 		/// </summary>
-		public bool ContinueRunning {
+		public bool ContinueRunning
+		{
 			get { return continueRunning_; }
 			set { continueRunning_ = value; }
 		}
@@ -316,7 +331,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			DirectoryFailureHandler handler = DirectoryFailure;
 			bool result = (handler != null);
-			if (result) {
+			if (result)
+			{
 				var args = new ScanFailureEventArgs(directory, e);
 				handler(this, args);
 				alive_ = args.ContinueRunning;
@@ -335,7 +351,8 @@ namespace ICSharpCode.SharpZipLib.Core
 
 			bool result = (handler != null);
 
-			if (result) {
+			if (result)
+			{
 				var args = new ScanFailureEventArgs(file, e);
 				FileFailure(this, args);
 				alive_ = args.ContinueRunning;
@@ -351,7 +368,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			ProcessFileHandler handler = ProcessFile;
 
-			if (handler != null) {
+			if (handler != null)
+			{
 				var args = new ScanEventArgs(file);
 				handler(this, args);
 				alive_ = args.ContinueRunning;
@@ -366,7 +384,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			CompletedFileHandler handler = CompletedFile;
 
-			if (handler != null) {
+			if (handler != null)
+			{
 				var args = new ScanEventArgs(file);
 				handler(this, args);
 				alive_ = args.ContinueRunning;
@@ -382,7 +401,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			EventHandler<DirectoryEventArgs> handler = ProcessDirectory;
 
-			if (handler != null) {
+			if (handler != null)
+			{
 				var args = new DirectoryEventArgs(directory, hasMatchingFiles);
 				handler(this, args);
 				alive_ = args.ContinueRunning;
@@ -403,54 +423,78 @@ namespace ICSharpCode.SharpZipLib.Core
 		void ScanDir(string directory, bool recurse)
 		{
 
-			try {
+			try
+			{
 				string[] names = System.IO.Directory.GetFiles(directory);
 				bool hasMatch = false;
-				for (int fileIndex = 0; fileIndex < names.Length; ++fileIndex) {
-					if (!fileFilter_.IsMatch(names[fileIndex])) {
+				for (int fileIndex = 0; fileIndex < names.Length; ++fileIndex)
+				{
+					if (!fileFilter_.IsMatch(names[fileIndex]))
+					{
 						names[fileIndex] = null;
-					} else {
+					}
+					else
+					{
 						hasMatch = true;
 					}
 				}
 
 				OnProcessDirectory(directory, hasMatch);
 
-				if (alive_ && hasMatch) {
-					foreach (string fileName in names) {
-						try {
-							if (fileName != null) {
+				if (alive_ && hasMatch)
+				{
+					foreach (string fileName in names)
+					{
+						try
+						{
+							if (fileName != null)
+							{
 								OnProcessFile(fileName);
-								if (!alive_) {
+								if (!alive_)
+								{
 									break;
 								}
 							}
-						} catch (Exception e) {
-							if (!OnFileFailure(fileName, e)) {
+						}
+						catch (Exception e)
+						{
+							if (!OnFileFailure(fileName, e))
+							{
 								throw;
 							}
 						}
 					}
 				}
-			} catch (Exception e) {
-				if (!OnDirectoryFailure(directory, e)) {
+			}
+			catch (Exception e)
+			{
+				if (!OnDirectoryFailure(directory, e))
+				{
 					throw;
 				}
 			}
 
-			if (alive_ && recurse) {
-				try {
+			if (alive_ && recurse)
+			{
+				try
+				{
 					string[] names = System.IO.Directory.GetDirectories(directory);
-					foreach (string fulldir in names) {
-						if ((directoryFilter_ == null) || (directoryFilter_.IsMatch(fulldir))) {
+					foreach (string fulldir in names)
+					{
+						if ((directoryFilter_ == null) || (directoryFilter_.IsMatch(fulldir)))
+						{
 							ScanDir(fulldir, true);
-							if (!alive_) {
+							if (!alive_)
+							{
 								break;
 							}
 						}
 					}
-				} catch (Exception e) {
-					if (!OnDirectoryFailure(directory, e)) {
+				}
+				catch (Exception e)
+				{
+					if (!OnDirectoryFailure(directory, e))
+					{
 						throw;
 					}
 				}

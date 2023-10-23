@@ -1,6 +1,6 @@
+using ICSharpCode.SharpZipLib.Checksum;
 using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Checksum;
 
 namespace ICSharpCode.SharpZipLib.BZip2
 {
@@ -94,7 +94,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			if (stream == null)
 				throw new ArgumentNullException(nameof(stream));
 			// init arrays
-			for (int i = 0; i < BZip2Constants.GroupCount; ++i) {
+			for (int i = 0; i < BZip2Constants.GroupCount; ++i)
+			{
 				limit[i] = new int[BZip2Constants.MaximumAlphaSize];
 				baseArray[i] = new int[BZip2Constants.MaximumAlphaSize];
 				perm[i] = new int[BZip2Constants.MaximumAlphaSize];
@@ -118,8 +119,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating if the stream supports reading
 		/// </summary>
-		public override bool CanRead {
-			get {
+		public override bool CanRead
+		{
+			get
+			{
 				return baseStream.CanRead;
 			}
 		}
@@ -127,8 +130,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets a value indicating whether the current stream supports seeking.
 		/// </summary>
-		public override bool CanSeek {
-			get {
+		public override bool CanSeek
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -137,8 +142,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Gets a value indicating whether the current stream supports writing.
 		/// This property always returns false
 		/// </summary>
-		public override bool CanWrite {
-			get {
+		public override bool CanWrite
+		{
+			get
+			{
 				return false;
 			}
 		}
@@ -146,8 +153,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <summary>
 		/// Gets the length in bytes of the stream.
 		/// </summary>
-		public override long Length {
-			get {
+		public override long Length
+		{
+			get
+			{
 				return baseStream.Length;
 			}
 		}
@@ -157,11 +166,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// Setting the position is not supported and will throw a NotSupportException.
 		/// </summary>
 		/// <exception cref="NotSupportedException">Any attempt to set the position.</exception>
-		public override long Position {
-			get {
+		public override long Position
+		{
+			get
+			{
 				return baseStream.Position;
 			}
-			set {
+			set
+			{
 				throw new NotSupportedException("BZip2InputStream position cannot be set");
 			}
 		}
@@ -233,13 +245,16 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </returns>
 		public override int Read(byte[] buffer, int offset, int count)
 		{
-			if (buffer == null) {
+			if (buffer == null)
+			{
 				throw new ArgumentNullException(nameof(buffer));
 			}
 
-			for (int i = 0; i < count; ++i) {
+			for (int i = 0; i < count; ++i)
+			{
 				int rb = ReadByte();
-				if (rb == -1) {
+				if (rb == -1)
+				{
 					return i;
 				}
 				buffer[offset + i] = (byte)rb;
@@ -252,7 +267,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// </summary>
 		protected override void Dispose(bool disposing)
 		{
-			if (disposing && IsStreamOwner) {
+			if (disposing && IsStreamOwner)
+			{
 				baseStream.Dispose();
 			}
 		}
@@ -262,12 +278,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		/// <returns>byte read or -1 on end of stream</returns>
 		public override int ReadByte()
 		{
-			if (streamEnd) {
+			if (streamEnd)
+			{
 				return -1; // ok
 			}
 
 			int retChar = currentChar;
-			switch (currentState) {
+			switch (currentState)
+			{
 				case RAND_PART_B_STATE:
 					SetupRandPartB();
 					break;
@@ -293,8 +311,10 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		void MakeMaps()
 		{
 			nInUse = 0;
-			for (int i = 0; i < 256; ++i) {
-				if (inUse[i]) {
+			for (int i = 0; i < 256; ++i)
+			{
+				if (inUse[i])
+				{
 					seqToUnseq[nInUse] = (byte)i;
 					unseqToSeq[i] = (byte)nInUse;
 					nInUse++;
@@ -310,7 +330,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			char magic3 = BsGetUChar();
 			char magic4 = BsGetUChar();
 
-			if (magic1 != 'B' || magic2 != 'Z' || magic3 != 'h' || magic4 < '1' || magic4 > '9') {
+			if (magic1 != 'B' || magic2 != 'Z' || magic3 != 'h' || magic4 < '1' || magic4 > '9')
+			{
 				streamEnd = true;
 				return;
 			}
@@ -328,12 +349,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			char magic5 = BsGetUChar();
 			char magic6 = BsGetUChar();
 
-			if (magic1 == 0x17 && magic2 == 0x72 && magic3 == 0x45 && magic4 == 0x38 && magic5 == 0x50 && magic6 == 0x90) {
+			if (magic1 == 0x17 && magic2 == 0x72 && magic3 == 0x45 && magic4 == 0x38 && magic5 == 0x50 && magic6 == 0x90)
+			{
 				Complete();
 				return;
 			}
 
-			if (magic1 != 0x31 || magic2 != 0x41 || magic3 != 0x59 || magic4 != 0x26 || magic5 != 0x53 || magic6 != 0x59) {
+			if (magic1 != 0x31 || magic2 != 0x41 || magic3 != 0x59 || magic4 != 0x26 || magic5 != 0x53 || magic6 != 0x59)
+			{
 				BadBlockHeader();
 				streamEnd = true;
 				return;
@@ -354,7 +377,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			computedBlockCRC = (int)mCrc.Value;
 
 			// -- A bad CRC is considered a fatal error. --
-			if (storedBlockCRC != computedBlockCRC) {
+			if (storedBlockCRC != computedBlockCRC)
+			{
 				CrcError();
 			}
 
@@ -366,7 +390,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		void Complete()
 		{
 			storedCombinedCRC = BsGetInt32();
-			if (storedCombinedCRC != (int)computedCombinedCRC) {
+			if (storedCombinedCRC != (int)computedCombinedCRC)
+			{
 				CrcError();
 			}
 
@@ -377,13 +402,17 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			int thech = 0;
 
-			try {
+			try
+			{
 				thech = baseStream.ReadByte();
-			} catch (Exception) {
+			}
+			catch (Exception)
+			{
 				CompressedStreamEOF();
 			}
 
-			if (thech == -1) {
+			if (thech == -1)
+			{
 				CompressedStreamEOF();
 			}
 
@@ -393,7 +422,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		int BsR(int n)
 		{
-			while (bsLive < n) {
+			while (bsLive < n)
+			{
 				FillBuffer();
 			}
 
@@ -424,24 +454,32 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		void RecvDecodingTables()
 		{
 			char[][] len = new char[BZip2Constants.GroupCount][];
-			for (int i = 0; i < BZip2Constants.GroupCount; ++i) {
+			for (int i = 0; i < BZip2Constants.GroupCount; ++i)
+			{
 				len[i] = new char[BZip2Constants.MaximumAlphaSize];
 			}
 
 			bool[] inUse16 = new bool[16];
 
 			//--- Receive the mapping table ---
-			for (int i = 0; i < 16; i++) {
+			for (int i = 0; i < 16; i++)
+			{
 				inUse16[i] = (BsR(1) == 1);
 			}
 
-			for (int i = 0; i < 16; i++) {
-				if (inUse16[i]) {
-					for (int j = 0; j < 16; j++) {
+			for (int i = 0; i < 16; i++)
+			{
+				if (inUse16[i])
+				{
+					for (int j = 0; j < 16; j++)
+					{
 						inUse[i * 16 + j] = (BsR(1) == 1);
 					}
-				} else {
-					for (int j = 0; j < 16; j++) {
+				}
+				else
+				{
+					for (int j = 0; j < 16; j++)
+					{
 						inUse[i * 16 + j] = false;
 					}
 				}
@@ -454,9 +492,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			int nGroups = BsR(3);
 			int nSelectors = BsR(15);
 
-			for (int i = 0; i < nSelectors; i++) {
+			for (int i = 0; i < nSelectors; i++)
+			{
 				int j = 0;
-				while (BsR(1) == 1) {
+				while (BsR(1) == 1)
+				{
 					j++;
 				}
 				selectorMtf[i] = (byte)j;
@@ -464,14 +504,17 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 			//--- Undo the MTF values for the selectors. ---
 			byte[] pos = new byte[BZip2Constants.GroupCount];
-			for (int v = 0; v < nGroups; v++) {
+			for (int v = 0; v < nGroups; v++)
+			{
 				pos[v] = (byte)v;
 			}
 
-			for (int i = 0; i < nSelectors; i++) {
+			for (int i = 0; i < nSelectors; i++)
+			{
 				int v = selectorMtf[i];
 				byte tmp = pos[v];
-				while (v > 0) {
+				while (v > 0)
+				{
 					pos[v] = pos[v - 1];
 					v--;
 				}
@@ -480,13 +523,19 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 
 			//--- Now the coding tables ---
-			for (int t = 0; t < nGroups; t++) {
+			for (int t = 0; t < nGroups; t++)
+			{
 				int curr = BsR(5);
-				for (int i = 0; i < alphaSize; i++) {
-					while (BsR(1) == 1) {
-						if (BsR(1) == 0) {
+				for (int i = 0; i < alphaSize; i++)
+				{
+					while (BsR(1) == 1)
+					{
+						if (BsR(1) == 0)
+						{
 							curr++;
-						} else {
+						}
+						else
+						{
 							curr--;
 						}
 					}
@@ -495,10 +544,12 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			}
 
 			//--- Create the Huffman decoding tables ---
-			for (int t = 0; t < nGroups; t++) {
+			for (int t = 0; t < nGroups; t++)
+			{
 				int minLen = 32;
 				int maxLen = 0;
-				for (int i = 0; i < alphaSize; i++) {
+				for (int i = 0; i < alphaSize; i++)
+				{
 					maxLen = Math.Max(maxLen, len[t][i]);
 					minLen = Math.Min(minLen, len[t][i]);
 				}
@@ -526,17 +577,20 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			in a separate pass, and so saves a block's worth of
 			cache misses.
 			--*/
-			for (int i = 0; i <= 255; i++) {
+			for (int i = 0; i <= 255; i++)
+			{
 				unzftab[i] = 0;
 			}
 
-			for (int i = 0; i <= 255; i++) {
+			for (int i = 0; i <= 255; i++)
+			{
 				yy[i] = (byte)i;
 			}
 
 			last = -1;
 
-			if (groupPos == 0) {
+			if (groupPos == 0)
+			{
 				groupNo++;
 				groupPos = BZip2Constants.GroupSize;
 			}
@@ -547,41 +601,53 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			int zvec = BsR(zn);
 			int zj;
 
-			while (zvec > limit[zt][zn]) {
-				if (zn > 20) { // the longest code
+			while (zvec > limit[zt][zn])
+			{
+				if (zn > 20)
+				{ // the longest code
 					throw new BZip2Exception("Bzip data error");
 				}
 				zn++;
-				while (bsLive < 1) {
+				while (bsLive < 1)
+				{
 					FillBuffer();
 				}
 				zj = (bsBuff >> (bsLive - 1)) & 1;
 				bsLive--;
 				zvec = (zvec << 1) | zj;
 			}
-			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MaximumAlphaSize) {
+			if (zvec - baseArray[zt][zn] < 0 || zvec - baseArray[zt][zn] >= BZip2Constants.MaximumAlphaSize)
+			{
 				throw new BZip2Exception("Bzip data error");
 			}
 			nextSym = perm[zt][zvec - baseArray[zt][zn]];
 
-			while (true) {
-				if (nextSym == EOB) {
+			while (true)
+			{
+				if (nextSym == EOB)
+				{
 					break;
 				}
 
-				if (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB) {
+				if (nextSym == BZip2Constants.RunA || nextSym == BZip2Constants.RunB)
+				{
 					int s = -1;
 					int n = 1;
-					do {
-						if (nextSym == BZip2Constants.RunA) {
+					do
+					{
+						if (nextSym == BZip2Constants.RunA)
+						{
 							s += (0 + 1) * n;
-						} else if (nextSym == BZip2Constants.RunB) {
+						}
+						else if (nextSym == BZip2Constants.RunB)
+						{
 							s += (1 + 1) * n;
 						}
 
 						n <<= 1;
 
-						if (groupPos == 0) {
+						if (groupPos == 0)
+						{
 							groupNo++;
 							groupPos = BZip2Constants.GroupSize;
 						}
@@ -592,9 +658,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 						zn = minLens[zt];
 						zvec = BsR(zn);
 
-						while (zvec > limit[zt][zn]) {
+						while (zvec > limit[zt][zn])
+						{
 							zn++;
-							while (bsLive < 1) {
+							while (bsLive < 1)
+							{
 								FillBuffer();
 							}
 							zj = (bsBuff >> (bsLive - 1)) & 1;
@@ -608,19 +676,24 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					byte ch = seqToUnseq[yy[0]];
 					unzftab[ch] += s;
 
-					while (s > 0) {
+					while (s > 0)
+					{
 						last++;
 						ll8[last] = ch;
 						s--;
 					}
 
-					if (last >= limitLast) {
+					if (last >= limitLast)
+					{
 						BlockOverrun();
 					}
 					continue;
-				} else {
+				}
+				else
+				{
 					last++;
-					if (last >= limitLast) {
+					if (last >= limitLast)
+					{
 						BlockOverrun();
 					}
 
@@ -628,12 +701,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					unzftab[seqToUnseq[tmp]]++;
 					ll8[last] = seqToUnseq[tmp];
 
-					for (int j = nextSym - 1; j > 0; --j) {
+					for (int j = nextSym - 1; j > 0; --j)
+					{
 						yy[j] = yy[j - 1];
 					}
 					yy[0] = tmp;
 
-					if (groupPos == 0) {
+					if (groupPos == 0)
+					{
 						groupNo++;
 						groupPos = BZip2Constants.GroupSize;
 					}
@@ -642,9 +717,11 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					zt = selector[groupNo];
 					zn = minLens[zt];
 					zvec = BsR(zn);
-					while (zvec > limit[zt][zn]) {
+					while (zvec > limit[zt][zn])
+					{
 						zn++;
-						while (bsLive < 1) {
+						while (bsLive < 1)
+						{
 							FillBuffer();
 						}
 						zj = (bsBuff >> (bsLive - 1)) & 1;
@@ -664,11 +741,13 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			cftab[0] = 0;
 			Array.Copy(unzftab, 0, cftab, 1, 256);
 
-			for (int i = 1; i <= 256; i++) {
+			for (int i = 1; i <= 256; i++)
+			{
 				cftab[i] += cftab[i - 1];
 			}
 
-			for (int i = 0; i <= last; i++) {
+			for (int i = 0; i <= last; i++)
+			{
 				byte ch = ll8[i];
 				tt[cftab[ch]] = i;
 				cftab[ch]++;
@@ -682,25 +761,31 @@ namespace ICSharpCode.SharpZipLib.BZip2
 			i2 = 0;
 			ch2 = 256;   /*-- not a char and not EOF --*/
 
-			if (blockRandomised) {
+			if (blockRandomised)
+			{
 				rNToGo = 0;
 				rTPos = 0;
 				SetupRandPartA();
-			} else {
+			}
+			else
+			{
 				SetupNoRandPartA();
 			}
 		}
 
 		void SetupRandPartA()
 		{
-			if (i2 <= last) {
+			if (i2 <= last)
+			{
 				chPrev = ch2;
 				ch2 = ll8[tPos];
 				tPos = tt[tPos];
-				if (rNToGo == 0) {
+				if (rNToGo == 0)
+				{
 					rNToGo = BZip2Constants.RandomNumbers[rTPos];
 					rTPos++;
-					if (rTPos == 512) {
+					if (rTPos == 512)
+					{
 						rTPos = 0;
 					}
 				}
@@ -711,7 +796,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				currentChar = ch2;
 				currentState = RAND_PART_B_STATE;
 				mCrc.Update(ch2);
-			} else {
+			}
+			else
+			{
 				EndBlock();
 				InitBlock();
 				SetupBlock();
@@ -720,7 +807,8 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		void SetupNoRandPartA()
 		{
-			if (i2 <= last) {
+			if (i2 <= last)
+			{
 				chPrev = ch2;
 				ch2 = ll8[tPos];
 				tPos = tt[tPos];
@@ -729,7 +817,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 				currentChar = ch2;
 				currentState = NO_RAND_PART_B_STATE;
 				mCrc.Update(ch2);
-			} else {
+			}
+			else
+			{
 				EndBlock();
 				InitBlock();
 				SetupBlock();
@@ -738,19 +828,25 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		void SetupRandPartB()
 		{
-			if (ch2 != chPrev) {
+			if (ch2 != chPrev)
+			{
 				currentState = RAND_PART_A_STATE;
 				count = 1;
 				SetupRandPartA();
-			} else {
+			}
+			else
+			{
 				count++;
-				if (count >= 4) {
+				if (count >= 4)
+				{
 					z = ll8[tPos];
 					tPos = tt[tPos];
-					if (rNToGo == 0) {
+					if (rNToGo == 0)
+					{
 						rNToGo = BZip2Constants.RandomNumbers[rTPos];
 						rTPos++;
-						if (rTPos == 512) {
+						if (rTPos == 512)
+						{
 							rTPos = 0;
 						}
 					}
@@ -759,7 +855,9 @@ namespace ICSharpCode.SharpZipLib.BZip2
 					j2 = 0;
 					currentState = RAND_PART_C_STATE;
 					SetupRandPartC();
-				} else {
+				}
+				else
+				{
 					currentState = RAND_PART_A_STATE;
 					SetupRandPartA();
 				}
@@ -768,11 +866,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		void SetupRandPartC()
 		{
-			if (j2 < (int)z) {
+			if (j2 < (int)z)
+			{
 				currentChar = ch2;
 				mCrc.Update(ch2);
 				j2++;
-			} else {
+			}
+			else
+			{
 				currentState = RAND_PART_A_STATE;
 				i2++;
 				count = 0;
@@ -782,19 +883,25 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		void SetupNoRandPartB()
 		{
-			if (ch2 != chPrev) {
+			if (ch2 != chPrev)
+			{
 				currentState = NO_RAND_PART_A_STATE;
 				count = 1;
 				SetupNoRandPartA();
-			} else {
+			}
+			else
+			{
 				count++;
-				if (count >= 4) {
+				if (count >= 4)
+				{
 					z = ll8[tPos];
 					tPos = tt[tPos];
 					currentState = NO_RAND_PART_C_STATE;
 					j2 = 0;
 					SetupNoRandPartC();
-				} else {
+				}
+				else
+				{
 					currentState = NO_RAND_PART_A_STATE;
 					SetupNoRandPartA();
 				}
@@ -803,11 +910,14 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		void SetupNoRandPartC()
 		{
-			if (j2 < (int)z) {
+			if (j2 < (int)z)
+			{
 				currentChar = ch2;
 				mCrc.Update(ch2);
 				j2++;
-			} else {
+			}
+			else
+			{
 				currentState = NO_RAND_PART_A_STATE;
 				i2++;
 				count = 0;
@@ -817,13 +927,15 @@ namespace ICSharpCode.SharpZipLib.BZip2
 
 		void SetDecompressStructureSizes(int newSize100k)
 		{
-			if (!(0 <= newSize100k && newSize100k <= 9 && 0 <= blockSize100k && blockSize100k <= 9)) {
+			if (!(0 <= newSize100k && newSize100k <= 9 && 0 <= blockSize100k && blockSize100k <= 9))
+			{
 				throw new BZip2Exception("Invalid block size");
 			}
 
 			blockSize100k = newSize100k;
 
-			if (newSize100k == 0) {
+			if (newSize100k == 0)
+			{
 				return;
 			}
 
@@ -856,40 +968,49 @@ namespace ICSharpCode.SharpZipLib.BZip2
 		{
 			int pp = 0;
 
-			for (int i = minLen; i <= maxLen; ++i) {
-				for (int j = 0; j < alphaSize; ++j) {
-					if (length[j] == i) {
+			for (int i = minLen; i <= maxLen; ++i)
+			{
+				for (int j = 0; j < alphaSize; ++j)
+				{
+					if (length[j] == i)
+					{
 						perm[pp] = j;
 						++pp;
 					}
 				}
 			}
 
-			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++) {
+			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++)
+			{
 				baseArray[i] = 0;
 			}
 
-			for (int i = 0; i < alphaSize; i++) {
+			for (int i = 0; i < alphaSize; i++)
+			{
 				++baseArray[length[i] + 1];
 			}
 
-			for (int i = 1; i < BZip2Constants.MaximumCodeLength; i++) {
+			for (int i = 1; i < BZip2Constants.MaximumCodeLength; i++)
+			{
 				baseArray[i] += baseArray[i - 1];
 			}
 
-			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++) {
+			for (int i = 0; i < BZip2Constants.MaximumCodeLength; i++)
+			{
 				limit[i] = 0;
 			}
 
 			int vec = 0;
 
-			for (int i = minLen; i <= maxLen; i++) {
+			for (int i = minLen; i <= maxLen; i++)
+			{
 				vec += (baseArray[i + 1] - baseArray[i]);
 				limit[i] = vec - 1;
 				vec <<= 1;
 			}
 
-			for (int i = minLen + 1; i <= maxLen; i++) {
+			for (int i = minLen + 1; i <= maxLen; i++)
+			{
 				baseArray[i] = ((limit[i - 1] + 1) << 1) - baseArray[i];
 			}
 		}

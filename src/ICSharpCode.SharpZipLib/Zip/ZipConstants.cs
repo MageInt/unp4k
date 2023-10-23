@@ -1,7 +1,5 @@
 using System;
-using System.Globalization;
 using System.Text;
-using System.Threading;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -52,7 +50,7 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// BZip2 compression. Not supported by #Zip.
 		/// </summary>
 		BZip2 = 11,
-		
+
 		/// <summary>
 		/// WinZip special for AES encryption, Now supported by #Zip.
 		/// </summary>
@@ -441,13 +439,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// there are many variable factors, codepage 850 is often a good choice for
 		/// European users, however be careful about compatability.
 		/// </summary>
-		public static int DefaultCodePage {
-			get {
+		public static int DefaultCodePage
+		{
+			get
+			{
 				return defaultCodePage;
 			}
-			set {
+			set
+			{
 				if ((value < 0) || (value > 65535) ||
-					(value == 1) || (value == 2) || (value == 3) || (value == 42)) {
+					(value == 1) || (value == 2) || (value == 3) || (value == 42))
+				{
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
@@ -469,7 +471,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public static string ConvertToString(byte[] data, int count)
 		{
-			if (data == null) {
+			if (data == null)
+			{
 				return string.Empty;
 			}
 
@@ -487,7 +490,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public static string ConvertToString(byte[] data)
 		{
-			if (data == null) {
+			if (data == null)
+			{
 				return string.Empty;
 			}
 			return ConvertToString(data, data.Length);
@@ -506,13 +510,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public static string ConvertToStringExt(int flags, byte[] data, int count)
 		{
-			if (data == null) {
+			if (data == null)
+			{
 				return string.Empty;
 			}
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
+			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
+			{
 				return Encoding.UTF8.GetString(data, 0, count);
-			} else {
+			}
+			else
+			{
 				return ConvertToString(data, count);
 			}
 		}
@@ -529,13 +537,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// </returns>
 		public static string ConvertToStringExt(int flags, byte[] data)
 		{
-			if (data == null) {
+			if (data == null)
+			{
 				return string.Empty;
 			}
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
+			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
+			{
 				return Encoding.UTF8.GetString(data, 0, data.Length);
-			} else {
+			}
+			else
+			{
 				return ConvertToString(data, data.Length);
 			}
 		}
@@ -549,7 +561,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Converted array</returns>
 		public static byte[] ConvertToArray(string str)
 		{
-			if (str == null) {
+			if (str == null)
+			{
 				return new byte[0];
 			}
 
@@ -566,13 +579,17 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Converted array</returns>
 		public static byte[] ConvertToArray(int flags, string str)
 		{
-			if (str == null) {
+			if (str == null)
+			{
 				return new byte[0];
 			}
 
-			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0) {
+			if ((flags & (int)GeneralBitFlags.UnicodeText) != 0)
+			{
 				return Encoding.UTF8.GetBytes(str);
-			} else {
+			}
+			else
+			{
 				return ConvertToArray(str);
 			}
 		}

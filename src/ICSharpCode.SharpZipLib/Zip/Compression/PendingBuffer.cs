@@ -1,5 +1,3 @@
-using System;
-
 namespace ICSharpCode.SharpZipLib.Zip.Compression
 {
 	/// <summary>
@@ -128,8 +126,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// The number of bits written to the buffer
 		/// </summary>
-		public int BitCount {
-			get {
+		public int BitCount
+		{
+			get
+			{
 				return bitCount;
 			}
 		}
@@ -145,9 +145,11 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 				throw new SharpZipBaseException("Debug check: start != 0");
 			}
 #endif
-			if (bitCount > 0) {
+			if (bitCount > 0)
+			{
 				buffer[end++] = unchecked((byte)bits);
-				if (bitCount > 8) {
+				if (bitCount > 8)
+				{
 					buffer[end++] = unchecked((byte)(bits >> 8));
 				}
 			}
@@ -174,7 +176,8 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 #endif
 			bits |= (uint)(b << bitCount);
 			bitCount += count;
-			if (bitCount >= 16) {
+			if (bitCount >= 16)
+			{
 				buffer[end++] = unchecked((byte)bits);
 				buffer[end++] = unchecked((byte)(bits >> 8));
 				bits >>= 16;
@@ -201,8 +204,10 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <summary>
 		/// Indicates if buffer has been flushed
 		/// </summary>
-		public bool IsFlushed {
-			get {
+		public bool IsFlushed
+		{
+			get
+			{
 				return end == 0;
 			}
 		}
@@ -217,18 +222,22 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		/// <returns>The number of bytes flushed.</returns>
 		public int Flush(byte[] output, int offset, int length)
 		{
-			if (bitCount >= 8) {
+			if (bitCount >= 8)
+			{
 				buffer[end++] = unchecked((byte)bits);
 				bits >>= 8;
 				bitCount -= 8;
 			}
 
-			if (length > end - start) {
+			if (length > end - start)
+			{
 				length = end - start;
 				System.Array.Copy(buffer, start, output, offset, length);
 				start = 0;
 				end = 0;
-			} else {
+			}
+			else
+			{
 				System.Array.Copy(buffer, start, output, offset, length);
 				start += length;
 			}
@@ -245,7 +254,7 @@ namespace ICSharpCode.SharpZipLib.Zip.Compression
 		public byte[] ToByteArray()
 		{
 			AlignToByte();
-			
+
 			byte[] result = new byte[end - start];
 			System.Array.Copy(buffer, start, result, 0, result.Length);
 			start = 0;

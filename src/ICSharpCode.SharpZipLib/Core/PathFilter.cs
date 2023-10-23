@@ -32,7 +32,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = false;
 
-			if (name != null) {
+			if (name != null)
+			{
 				string cooked = (name.Length > 0) ? Path.GetFullPath(name) : "";
 				result = nameFilter_.IsMatch(cooked);
 			}
@@ -113,7 +114,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = base.IsMatch(name);
 
-			if (result) {
+			if (result)
+			{
 				var fileInfo = new FileInfo(name);
 				result =
 					(MinSize <= fileInfo.Length) &&
@@ -132,10 +134,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <remarks>The default value is zero.</remarks>
 		/// <exception cref="ArgumentOutOfRangeException">value is less than zero; greater than <see cref="MaxSize"/></exception>
-		public long MinSize {
+		public long MinSize
+		{
 			get { return minSize_; }
-			set {
-				if ((value < 0) || (maxSize_ < value)) {
+			set
+			{
+				if ((value < 0) || (maxSize_ < value))
+				{
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
@@ -148,10 +153,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// </summary>
 		/// <remarks>The default value is <see cref="System.Int64.MaxValue"/></remarks>
 		/// <exception cref="ArgumentOutOfRangeException">value is less than zero or less than <see cref="MinSize"/></exception>
-		public long MaxSize {
+		public long MaxSize
+		{
 			get { return maxSize_; }
-			set {
-				if ((value < 0) || (minSize_ > value)) {
+			set
+			{
+				if ((value < 0) || (minSize_ > value))
+				{
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
@@ -163,13 +171,17 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Get/set the minimum <see cref="DateTime"/> value that will match for this filter.
 		/// </summary>
 		/// <remarks>Files with a LastWrite time less than this value are excluded by the filter.</remarks>
-		public DateTime MinDate {
-			get {
+		public DateTime MinDate
+		{
+			get
+			{
 				return minDate_;
 			}
 
-			set {
-				if (value > maxDate_) {
+			set
+			{
+				if (value > maxDate_)
+				{
 					throw new ArgumentOutOfRangeException(nameof(value), "Exceeds MaxDate");
 				}
 
@@ -181,13 +193,17 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// Get/set the maximum <see cref="DateTime"/> value that will match for this filter.
 		/// </summary>
 		/// <remarks>Files with a LastWrite time greater than this value are excluded by the filter.</remarks>
-		public DateTime MaxDate {
-			get {
+		public DateTime MaxDate
+		{
+			get
+			{
 				return maxDate_;
 			}
 
-			set {
-				if (minDate_ > value) {
+			set
+			{
+				if (minDate_ > value)
+				{
 					throw new ArgumentOutOfRangeException(nameof(value), "Exceeds MinDate");
 				}
 
@@ -234,7 +250,8 @@ namespace ICSharpCode.SharpZipLib.Core
 		{
 			bool result = base.IsMatch(name);
 
-			if (result) {
+			if (result)
+			{
 				var fileInfo = new FileInfo(name);
 				long length = fileInfo.Length;
 				result =
@@ -247,10 +264,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Get/set the minimum size for a file that will match this filter.
 		/// </summary>
-		public long MinSize {
+		public long MinSize
+		{
 			get { return minSize_; }
-			set {
-				if ((value < 0) || (maxSize_ < value)) {
+			set
+			{
+				if ((value < 0) || (maxSize_ < value))
+				{
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 
@@ -261,10 +281,13 @@ namespace ICSharpCode.SharpZipLib.Core
 		/// <summary>
 		/// Get/set the maximum size for a file that will match this filter.
 		/// </summary>
-		public long MaxSize {
+		public long MaxSize
+		{
 			get { return maxSize_; }
-			set {
-				if ((value < 0) || (minSize_ > value)) {
+			set
+			{
+				if ((value < 0) || (minSize_ > value))
+				{
 					throw new ArgumentOutOfRangeException(nameof(value));
 				}
 

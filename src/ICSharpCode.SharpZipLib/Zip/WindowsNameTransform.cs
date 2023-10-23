@@ -1,7 +1,7 @@
+using ICSharpCode.SharpZipLib.Core;
 using System;
 using System.IO;
 using System.Text;
-using ICSharpCode.SharpZipLib.Core;
 
 namespace ICSharpCode.SharpZipLib.Zip
 {
@@ -40,7 +40,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <param name="baseDirectory"></param>
 		public WindowsNameTransform(string baseDirectory)
 		{
-			if (baseDirectory == null) {
+			if (baseDirectory == null)
+			{
 				throw new ArgumentNullException(nameof(baseDirectory), "Directory name is invalid");
 			}
 
@@ -58,10 +59,13 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets or sets a value containing the target directory to prefix values with.
 		/// </summary>
-		public string BaseDirectory {
+		public string BaseDirectory
+		{
 			get { return _baseDirectory; }
-			set {
-				if (value == null) {
+			set
+			{
+				if (value == null)
+				{
 					throw new ArgumentNullException(nameof(value));
 				}
 
@@ -72,7 +76,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets or sets a value indicating wether paths on incoming values should be removed.
 		/// </summary>
-		public bool TrimIncomingPaths {
+		public bool TrimIncomingPaths
+		{
 			get { return _trimIncomingPaths; }
 			set { _trimIncomingPaths = value; }
 		}
@@ -85,11 +90,15 @@ namespace ICSharpCode.SharpZipLib.Zip
 		public string TransformDirectory(string name)
 		{
 			name = TransformFile(name);
-			if (name.Length > 0) {
-				while (name.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)) {
+			if (name.Length > 0)
+			{
+				while (name.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal))
+				{
 					name = name.Remove(name.Length - 1, 1);
 				}
-			} else {
+			}
+			else
+			{
 				throw new ZipException("Cannot have an empty directory name");
 			}
 			return name;
@@ -102,19 +111,24 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>The transformed name.</returns>
 		public string TransformFile(string name)
 		{
-			if (name != null) {
+			if (name != null)
+			{
 				name = MakeValidName(name, _replacementChar);
 
-				if (_trimIncomingPaths) {
+				if (_trimIncomingPaths)
+				{
 					name = Path.GetFileName(name);
 				}
 
 				// This may exceed windows length restrictions.
 				// Combine will throw a PathTooLongException in that case.
-				if (_baseDirectory != null) {
+				if (_baseDirectory != null)
+				{
 					name = Path.Combine(_baseDirectory, name);
 				}
-			} else {
+			}
+			else
+			{
 				name = string.Empty;
 			}
 			return name;
@@ -145,40 +159,49 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <returns>Returns a valid name</returns>
 		public static string MakeValidName(string name, char replacement)
 		{
-			if (name == null) {
+			if (name == null)
+			{
 				throw new ArgumentNullException(nameof(name));
 			}
 
 			name = WindowsPathUtils.DropPathRoot(name.Replace("/", Path.DirectorySeparatorChar.ToString()));
 
 			// Drop any leading slashes.
-			while ((name.Length > 0) && (name[0] == Path.DirectorySeparatorChar)) {
+			while ((name.Length > 0) && (name[0] == Path.DirectorySeparatorChar))
+			{
 				name = name.Remove(0, 1);
 			}
 
 			// Drop any trailing slashes.
-			while ((name.Length > 0) && (name[name.Length - 1] == Path.DirectorySeparatorChar)) {
+			while ((name.Length > 0) && (name[name.Length - 1] == Path.DirectorySeparatorChar))
+			{
 				name = name.Remove(name.Length - 1, 1);
 			}
 
 			// Convert consecutive \\ characters to \
 			int index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar), StringComparison.Ordinal);
-			while (index >= 0) {
+			while (index >= 0)
+			{
 				name = name.Remove(index, 1);
 				index = name.IndexOf(string.Format("{0}{0}", Path.DirectorySeparatorChar), StringComparison.Ordinal);
 			}
 
 			// Convert any invalid characters using the replacement one.
 			index = name.IndexOfAny(InvalidEntryChars);
-			if (index >= 0) {
+			if (index >= 0)
+			{
 				var builder = new StringBuilder(name);
 
-				while (index >= 0) {
+				while (index >= 0)
+				{
 					builder[index] = replacement;
 
-					if (index >= name.Length) {
+					if (index >= name.Length)
+					{
 						index = -1;
-					} else {
+					}
+					else
+					{
 						index = name.IndexOfAny(InvalidEntryChars, index + 1);
 					}
 				}
@@ -187,7 +210,8 @@ namespace ICSharpCode.SharpZipLib.Zip
 
 			// Check for names greater than MaxPath characters.
 			// TODO: Were is CLR version of MaxPath defined?  Can't find it in Environment.
-			if (name.Length > MaxPath) {
+			if (name.Length > MaxPath)
+			{
 				throw new PathTooLongException();
 			}
 
@@ -197,16 +221,21 @@ namespace ICSharpCode.SharpZipLib.Zip
 		/// <summary>
 		/// Gets or set the character to replace invalid characters during transformations.
 		/// </summary>
-		public char Replacement {
+		public char Replacement
+		{
 			get { return _replacementChar; }
-			set {
-				for (int i = 0; i < InvalidEntryChars.Length; ++i) {
-					if (InvalidEntryChars[i] == value) {
+			set
+			{
+				for (int i = 0; i < InvalidEntryChars.Length; ++i)
+				{
+					if (InvalidEntryChars[i] == value)
+					{
 						throw new ArgumentException("invalid path character");
 					}
 				}
 
-				if ((value == Path.DirectorySeparatorChar) || (value == Path.AltDirectorySeparatorChar)) {
+				if ((value == Path.DirectorySeparatorChar) || (value == Path.AltDirectorySeparatorChar))
+				{
 					throw new ArgumentException("invalid replacement character");
 				}
 
