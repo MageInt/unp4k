@@ -226,7 +226,7 @@ namespace unp4k.gui
 
 		private void trvFileExplorer_Expanded(object sender, RoutedEventArgs e)
 		{
-			var node = (e.OriginalSource as TreeViewItem)?.DataContext as TreeItem;
+			TreeItem node = (e.OriginalSource as TreeViewItem)?.DataContext as TreeItem;
 
 			if (node != null)
 			{
