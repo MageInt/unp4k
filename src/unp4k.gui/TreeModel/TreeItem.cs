@@ -111,28 +111,28 @@ namespace unp4k.gui.TreeModel
 			return directory.GetParentRelativePath(fullPath.Skip(1).ToArray());
 		}
 
-		public void Sort()
-		{
-			if (Children.Count > 1)
-			{
-				Children.Sort((x1, x2) =>
-				{
-					if (x1 is TreeItem t1)
-					{
-						if (x2 is TreeItem t2)
-						{
-							return String.Compare(t1.SortKey, t2.SortKey, StringComparison.InvariantCultureIgnoreCase);
-						}
-					}
+		//public void Sort()
+		//{
+		//	if (Children.Count > 1)
+		//	{
+		//		Children.Sort((x1, x2) =>
+		//		{
+		//			if (x1 is TreeItem t1)
+		//			{
+		//				if (x2 is TreeItem t2)
+		//				{
+		//					return string.Compare(t1.SortKey, t2.SortKey, StringComparison.InvariantCultureIgnoreCase);
+		//				}
+		//			}
 
-					return String.Compare($"{x1.Text}", $"{x2.Text}", StringComparison.InvariantCultureIgnoreCase);
-				});
-			}
+		//			return string.Compare($"{x1.Text}", $"{x2.Text}", StringComparison.InvariantCultureIgnoreCase);
+		//		});
+		//	}
 
-			foreach (var child in Children.OfType<TreeItem>())
-			{
-				child.Sort();
-			}
-		}
+		//	foreach (var child in Children.OfType<TreeItem>())
+		//	{
+		//		child.Sort();
+		//	}
+		//}
 	}
 }

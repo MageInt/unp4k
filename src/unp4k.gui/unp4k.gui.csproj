@@ -164,6 +164,10 @@
       <Project>{c53beb8a-0989-43a7-b3ec-f7028749fa71}</Project>
       <Name>ICSharpCode.SharpZipLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ICSharpCode.TreeView\ICSharpCode.TreeView.csproj">
+      <Project>{721ecdcd-a6ba-4f20-a727-3175842cad49}</Project>
+      <Name>ICSharpCode.TreeView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\unforge\unforge.csproj">
       <Project>{273d3d56-f005-4ed5-babb-fd88fbc3fc63}</Project>
       <Name>unforge</Name>
